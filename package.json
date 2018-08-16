@@ -20,6 +20,7 @@
     "express": "^4.16.3",
     "gulp": "^3.9.1",
     "gulp-typescript": "^5.0.0-alpha.3",
+    "lodash": "^4.17.10",
     "swagger-ui-express": "^3.0.10",
     "tsoa": "^2.1.8",
     "typescript": "^3.0.1"
