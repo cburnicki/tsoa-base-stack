@@ -1,11 +1,17 @@
 
-import {Collection, FilterQuery} from "mongodb";
+import {Collection, Db, FilterQuery} from "mongodb";
 import {ObjectID} from "bson";
 import {IDbBaseModel} from "../model/DbBaseModel";
+import {DbConnFactory} from "../utils/DbConnFactory";
 
 export class BaseRepo<T extends IDbBaseModel> {
 
+    protected db: Db = DbConnFactory.Db;
     protected c: Collection<IDbBaseModel>;
+
+    constructor(collection: string) {
+        this.c = DbConnFactory.Db.collection(collection);
+    }
 
     async insertOne(doc: T): Promise<T> {
         doc.createdAt = new Date();
