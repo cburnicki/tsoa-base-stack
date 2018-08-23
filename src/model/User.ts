@@ -1,5 +1,6 @@
-export interface User {
-    id: number;
+import {IDbBaseModel} from "./DbBaseModel";
+
+export interface IUser extends IDbBaseModel {
     email: string;
     name: string;
     status?: status;

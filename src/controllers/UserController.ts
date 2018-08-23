@@ -1,11 +1,11 @@
 import {Get, Post, Route, Body, Query, Header, Path, SuccessResponse, Controller } from 'tsoa';
 import {request} from "http";
-import {User, UserCreationRequest} from "../model/User";
+import {IUser, UserCreationRequest} from "../model/User";
 
 @Route('Users')
 export class UsersController extends Controller {
     @Get('{id}')
-    public async getUser(id: number, @Query() name: string): Promise<User> {
+    public async getUser(id: number, @Query() name: string): Promise<IUser> {
         return {
             id: 2,
             email: 'sad',
