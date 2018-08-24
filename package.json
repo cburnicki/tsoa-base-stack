@@ -4,8 +4,8 @@
   "description": "A simple typescript/tsao base stack for client applications",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build && node ./build/server.js",
-    "serve": "npm run build:watch & nodemon ./build/server.js",
+    "start": "npm run build && node ./build/src/server.js",
+    "serve": "npm run build:watch & nodemon ./build/src/server.js",
     "swagger": "tsoa swagger",
     "routes": "tsoa routes",
     "build": "gulp",

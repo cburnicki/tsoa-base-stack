@@ -1,6 +1,7 @@
 import {IAuthor, IAuthorDto, newAuthor} from "../model/Author";
 import {Body, Controller, Get, Post, Route, SuccessResponse} from "tsoa";
 import {getAuthorService} from "../service/AuthorService";
+import {ApiError, BadRequest} from "../utils/errorHandling";
 const ObjectId = require('mongodb').ObjectId;
 
 @Route('Authors')
@@ -8,7 +9,7 @@ export class AuthorsController extends Controller {
 
     @Get()
     public async test(): Promise<void> {
-        throw new Error('test Error');
+        throw BadRequest();
     }
 
     @Get('{id}')

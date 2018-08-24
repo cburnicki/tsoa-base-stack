@@ -17,7 +17,7 @@ gulp.task('watch', ['scripts'], () => {
 
 gulp.task('swagger', function() {
     return gulp.src(swagger)
-        .pipe(gulp.dest('build/swagger'));
+        .pipe(gulp.dest('build/src/swagger'));
 });
 
 

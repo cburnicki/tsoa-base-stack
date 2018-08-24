@@ -1,5 +1,6 @@
 import {createApp} from "./bootstrap";
 import {DbConnFactory} from "./utils/DbConnFactory";
+import {AuthorsController} from "./controllers/AuthorController";
 
 export const app = createApp();
 

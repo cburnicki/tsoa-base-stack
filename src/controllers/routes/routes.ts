@@ -1,10 +1,89 @@
 /* tslint:disable */
 import { Controller, ValidateParam, FieldErrors, ValidateError, TsoaRoute } from 'tsoa';
+import { AuthorsController } from './../AuthorController';
 
 const models: TsoaRoute.Models = {
+    "ObjectID": {
+        "properties": {
+            "generationTime": { "dataType": "double", "required": true },
+            "cacheHexString": { "dataType": "boolean" },
+            "id": { "dataType": "object" },
+        },
+    },
+    "IAuthor": {
+        "properties": {
+            "_id": { "ref": "ObjectID" },
+            "createdAt": { "dataType": "datetime" },
+            "updatedAt": { "dataType": "datetime" },
+            "version": { "dataType": "double" },
+            "name": { "dataType": "string", "required": true },
+        },
+    },
+    "IAuthorDto": {
+        "properties": {
+            "id": { "dataType": "string" },
+            "name": { "dataType": "string", "required": true },
+        },
+    },
 };
 
 export function RegisterRoutes(app: any) {
+    app.get('/Authors',
+        function(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AuthorsController();
+
+
+            const promise = controller.test.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, next);
+        });
+    app.get('/Authors/:id',
+        function(request: any, response: any, next: any) {
+            const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AuthorsController();
+
+
+            const promise = controller.getAuthor.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, next);
+        });
+    app.post('/Authors',
+        function(request: any, response: any, next: any) {
+            const args = {
+                body: { "in": "body", "name": "body", "required": true, "ref": "IAuthorDto" },
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AuthorsController();
+
+
+            const promise = controller.createAuthor.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, next);
+        });
 
 
     function isController(object: any): object is Controller {
