@@ -12,6 +12,7 @@ export class ApiError extends Error {
 }
 
 export const BadRequest = (message?: string): ApiError => new ApiError(400, message || 'Bad Request');
+export const Conflict = (message?: string): ApiError => new ApiError(409, message || 'Conflict');
 
 export function apiErrorHandler(err: Error,
                                 req: express.Request,

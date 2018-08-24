@@ -17,6 +17,10 @@ export class AuthorService {
     async getAuthor(id: ObjectID): Promise<IAuthor> {
         return this.repo.findOneById(id);
     }
+
+    async getAllAuthors(): Promise<IAuthor[]> {
+        return this.repo.findAll();
+    }
 }
 
 export const getAuthorService = (): AuthorService => new AuthorService();
