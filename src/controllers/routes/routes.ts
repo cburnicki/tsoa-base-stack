@@ -1,66 +1,10 @@
 /* tslint:disable */
 import { Controller, ValidateParam, FieldErrors, ValidateError, TsoaRoute } from 'tsoa';
-import { UsersController } from './../UserController';
 
 const models: TsoaRoute.Models = {
-    "User": {
-        "properties": {
-            "id": { "dataType": "double", "required": true },
-            "email": { "dataType": "string", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "status": { "dataType": "enum", "enums": ["Happy", "Sad"] },
-            "phoneNumbers": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
-        },
-    },
-    "UserCreationRequest": {
-        "properties": {
-            "email": { "dataType": "string", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "phoneNumbers": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
-        },
-    },
 };
 
 export function RegisterRoutes(app: any) {
-    app.get('/Users/:id',
-        function(request: any, response: any, next: any) {
-            const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
-                name: { "in": "query", "name": "name", "required": true, "dataType": "string" },
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new UsersController();
-
-
-            const promise = controller.getUser.apply(controller, validatedArgs);
-            promiseHandler(controller, promise, response, next);
-        });
-    app.post('/Users',
-        function(request: any, response: any, next: any) {
-            const args = {
-                requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "UserCreationRequest" },
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new UsersController();
-
-
-            const promise = controller.createUser.apply(controller, validatedArgs);
-            promiseHandler(controller, promise, response, next);
-        });
 
 
     function isController(object: any): object is Controller {

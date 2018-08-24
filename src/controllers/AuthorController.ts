@@ -5,6 +5,12 @@ const ObjectId = require('mongodb').ObjectId;
 
 @Route('Authors')
 export class AuthorsController extends Controller {
+
+    @Get()
+    public async test(): Promise<void> {
+        throw new Error('test Error');
+    }
+
     @Get('{id}')
     public async getAuthor(id: number): Promise<IAuthor> {
         return getAuthorService().getAuthor(new ObjectId(id));
@@ -14,10 +20,10 @@ export class AuthorsController extends Controller {
     @Post()
     public async createAuthor(@Body() body: IAuthorDto): Promise<IAuthor> {
         const service = getAuthorService();
-        if (await service.authorNameExists(body.name)) {
-            this.setStatus(409);
-            return Promise.resolve();
-        }
+        // if (await service.authorNameExists(body.name)) {
+        //     this.setStatus(409);
+        //     return Promise.resolve();
+        // }
         const added = await service.addAuthor(newAuthor(body));
         this.setStatus(201);
         return added;
