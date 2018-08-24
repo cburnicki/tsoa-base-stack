@@ -1,0 +1,158 @@
+{
+	"basePath": "",
+	"consumes": [
+		"application/json"
+	],
+	"definitions": {
+		"ObjectID": {
+			"description": "A class representation of the BSON ObjectID type. ",
+			"properties": {
+				"generationTime": {
+					"type": "number",
+					"format": "double",
+					"description": "The generation time of this ObjectID instance "
+				},
+				"cacheHexString": {
+					"type": "boolean",
+					"description": "If true cache the hex string representation of ObjectID ",
+					"x-nullable": true
+				},
+				"id": {
+					"type": "object",
+					"description": "Can be a 24 byte hex string, 12 byte binary string or a Number.",
+					"x-nullable": true
+				}
+			},
+			"required": [
+				"generationTime"
+			],
+			"type": "object"
+		},
+		"IAuthor": {
+			"properties": {
+				"_id": {
+					"$ref": "#/definitions/ObjectID",
+					"x-nullable": true
+				},
+				"createdAt": {
+					"type": "string",
+					"format": "date-time",
+					"x-nullable": true
+				},
+				"updatedAt": {
+					"type": "string",
+					"format": "date-time",
+					"x-nullable": true
+				},
+				"version": {
+					"type": "number",
+					"format": "double",
+					"x-nullable": true
+				},
+				"name": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"name"
+			],
+			"type": "object"
+		},
+		"IAuthorDto": {
+			"properties": {
+				"id": {
+					"type": "string",
+					"x-nullable": true
+				},
+				"name": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"name"
+			],
+			"type": "object"
+		}
+	},
+	"info": {
+		"title": "ts-base-stack",
+		"version": "1.0.0",
+		"description": "A simple typescript/tsao base stack for client applications",
+		"license": {
+			"name": "ISC"
+		}
+	},
+	"paths": {
+		"/Authors": {
+			"get": {
+				"operationId": "Test",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateAuthor",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"201": {
+						"description": "Created",
+						"schema": {
+							"$ref": "#/definitions/IAuthor"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/IAuthorDto"
+						}
+					}
+				]
+			}
+		},
+		"/Authors/{id}": {
+			"get": {
+				"operationId": "GetAuthor",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IAuthor"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"format": "double",
+						"type": "number"
+					}
+				]
+			}
+		}
+	},
+	"produces": [
+		"application/json"
+	],
+	"swagger": "2.0",
+	"securityDefinitions": {}
+}
