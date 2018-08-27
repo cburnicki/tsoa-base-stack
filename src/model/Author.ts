@@ -16,6 +16,6 @@ export function authorToDto(author: IAuthor): IAuthorDto {
     };
 }
 
-export function newAuthor(dto: IAuthorDto): IAuthor {
+export function dtoToAuthor(dto: IAuthorDto): IAuthor {
     return {name: dto.name};
 }

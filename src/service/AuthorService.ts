@@ -10,6 +10,10 @@ export class AuthorService {
         return this.repo.existsByName(name);
     }
 
+    async authorExists(id: ObjectID): Promise<boolean> {
+        return this.repo.idExists(id);
+    }
+
     async addAuthor(author: IAuthor): Promise<IAuthor> {
         return this.repo.insertOne(author);
     }

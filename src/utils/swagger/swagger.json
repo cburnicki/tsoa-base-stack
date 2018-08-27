@@ -4,60 +4,6 @@
 		"application/json"
 	],
 	"definitions": {
-		"ObjectID": {
-			"description": "A class representation of the BSON ObjectID type. ",
-			"properties": {
-				"generationTime": {
-					"type": "number",
-					"format": "double",
-					"description": "The generation time of this ObjectID instance "
-				},
-				"cacheHexString": {
-					"type": "boolean",
-					"description": "If true cache the hex string representation of ObjectID ",
-					"x-nullable": true
-				},
-				"id": {
-					"type": "object",
-					"description": "Can be a 24 byte hex string, 12 byte binary string or a Number.",
-					"x-nullable": true
-				}
-			},
-			"required": [
-				"generationTime"
-			],
-			"type": "object"
-		},
-		"IAuthor": {
-			"properties": {
-				"_id": {
-					"$ref": "#/definitions/ObjectID",
-					"x-nullable": true
-				},
-				"createdAt": {
-					"type": "string",
-					"format": "date-time",
-					"x-nullable": true
-				},
-				"updatedAt": {
-					"type": "string",
-					"format": "date-time",
-					"x-nullable": true
-				},
-				"version": {
-					"type": "number",
-					"format": "double",
-					"x-nullable": true
-				},
-				"name": {
-					"type": "string"
-				}
-			},
-			"required": [
-				"name"
-			],
-			"type": "object"
-		},
 		"IAuthorDto": {
 			"properties": {
 				"id": {
@@ -72,6 +18,37 @@
 				"name"
 			],
 			"type": "object"
+		},
+		"IBookDto": {
+			"properties": {
+				"id": {
+					"type": "string",
+					"x-nullable": true
+				},
+				"title": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string",
+					"x-nullable": true
+				},
+				"dateOfPublication": {
+					"type": "string"
+				},
+				"authorId": {
+					"type": "string"
+				},
+				"author": {
+					"type": "string",
+					"x-nullable": true
+				}
+			},
+			"required": [
+				"title",
+				"dateOfPublication",
+				"authorId"
+			],
+			"type": "object"
 		}
 	},
 	"info": {
@@ -83,15 +60,21 @@
 		}
 	},
 	"paths": {
-		"/Authors": {
+		"/authors": {
 			"get": {
-				"operationId": "Test",
+				"operationId": "GetAuthors",
 				"produces": [
 					"application/json"
 				],
 				"responses": {
-					"204": {
-						"description": "No content"
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/IAuthorDto"
+							}
+						}
 					}
 				},
 				"security": [],
@@ -106,7 +89,7 @@
 					"201": {
 						"description": "Created",
 						"schema": {
-							"$ref": "#/definitions/IAuthor"
+							"$ref": "#/definitions/IAuthorDto"
 						}
 					}
 				},
@@ -123,7 +106,7 @@
 				]
 			}
 		},
-		"/Authors/{id}": {
+		"/authors/{id}": {
 			"get": {
 				"operationId": "GetAuthor",
 				"produces": [
@@ -133,7 +116,79 @@
 					"200": {
 						"description": "Ok",
 						"schema": {
-							"$ref": "#/definitions/IAuthor"
+							"$ref": "#/definitions/IAuthorDto"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"format": "double",
+						"type": "number"
+					}
+				]
+			}
+		},
+		"/books": {
+			"get": {
+				"operationId": "GetBooks",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/IBookDto"
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateBook",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"201": {
+						"description": "Created",
+						"schema": {
+							"$ref": "#/definitions/IBookDto"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/IBookDto"
+						}
+					}
+				]
+			}
+		},
+		"/books/{id}": {
+			"get": {
+				"operationId": "GetBook",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IBookDto"
 						}
 					}
 				},

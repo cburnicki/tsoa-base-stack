@@ -1,34 +1,29 @@
 /* tslint:disable */
 import { Controller, ValidateParam, FieldErrors, ValidateError, TsoaRoute } from 'tsoa';
 import { AuthorsController } from './../AuthorController';
+import { BookController } from './../BookController';
 
 const models: TsoaRoute.Models = {
-    "ObjectID": {
-        "properties": {
-            "generationTime": { "dataType": "double", "required": true },
-            "cacheHexString": { "dataType": "boolean" },
-            "id": { "dataType": "object" },
-        },
-    },
-    "IAuthor": {
-        "properties": {
-            "_id": { "ref": "ObjectID" },
-            "createdAt": { "dataType": "datetime" },
-            "updatedAt": { "dataType": "datetime" },
-            "version": { "dataType": "double" },
-            "name": { "dataType": "string", "required": true },
-        },
-    },
     "IAuthorDto": {
         "properties": {
             "id": { "dataType": "string" },
             "name": { "dataType": "string", "required": true },
         },
     },
+    "IBookDto": {
+        "properties": {
+            "id": { "dataType": "string" },
+            "title": { "dataType": "string", "required": true },
+            "description": { "dataType": "string" },
+            "dateOfPublication": { "dataType": "string", "required": true },
+            "authorId": { "dataType": "string", "required": true },
+            "author": { "dataType": "string" },
+        },
+    },
 };
 
 export function RegisterRoutes(app: any) {
-    app.get('/Authors',
+    app.get('/authors',
         function(request: any, response: any, next: any) {
             const args = {
             };
@@ -43,10 +38,10 @@ export function RegisterRoutes(app: any) {
             const controller = new AuthorsController();
 
 
-            const promise = controller.test.apply(controller, validatedArgs);
+            const promise = controller.getAuthors.apply(controller, validatedArgs);
             promiseHandler(controller, promise, response, next);
         });
-    app.get('/Authors/:id',
+    app.get('/authors/:id',
         function(request: any, response: any, next: any) {
             const args = {
                 id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
@@ -65,7 +60,7 @@ export function RegisterRoutes(app: any) {
             const promise = controller.getAuthor.apply(controller, validatedArgs);
             promiseHandler(controller, promise, response, next);
         });
-    app.post('/Authors',
+    app.post('/authors',
         function(request: any, response: any, next: any) {
             const args = {
                 body: { "in": "body", "name": "body", "required": true, "ref": "IAuthorDto" },
@@ -82,6 +77,62 @@ export function RegisterRoutes(app: any) {
 
 
             const promise = controller.createAuthor.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, next);
+        });
+    app.get('/books',
+        function(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new BookController();
+
+
+            const promise = controller.getBooks.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, next);
+        });
+    app.get('/books/:id',
+        function(request: any, response: any, next: any) {
+            const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new BookController();
+
+
+            const promise = controller.getBook.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, next);
+        });
+    app.post('/books',
+        function(request: any, response: any, next: any) {
+            const args = {
+                body: { "in": "body", "name": "body", "required": true, "ref": "IBookDto" },
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new BookController();
+
+
+            const promise = controller.createBook.apply(controller, validatedArgs);
             promiseHandler(controller, promise, response, next);
         });
 

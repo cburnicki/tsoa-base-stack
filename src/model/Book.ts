@@ -1,12 +1,13 @@
 import {IDbBaseModel} from "./DbBaseModel";
 import {ObjectID} from "bson";
+const ObjectId = require('mongodb').ObjectId;
 
 export interface IBook extends IDbBaseModel {
     title: string;
     description?: string;
     dateOfPublication: Date;
     authorId: ObjectID;
-    author: string;
+    author?: string;
 }
 
 export interface IBookDto {
@@ -15,7 +16,16 @@ export interface IBookDto {
     description?: string;
     dateOfPublication: string;
     authorId: string;
-    author: string;
+    author?: string;
+}
+
+export function dtoToBook(dto: IBookDto): IBook {
+    return {
+        title: dto.title,
+        description: dto.description,
+        dateOfPublication: new Date(dto.dateOfPublication),
+        authorId: new ObjectId(dto.authorId)
+    };
 }
 
 export function bookToDto(book: IBook): IBookDto {
