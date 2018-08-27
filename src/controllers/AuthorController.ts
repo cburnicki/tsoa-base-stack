@@ -21,6 +21,7 @@ export class AuthorsController extends Controller {
     @SuccessResponse('201', 'Created')
     @Post()
     public async createAuthor(@Body() body: IAuthorDto): Promise<IAuthorDto> {
+        console.log(body);
         const service = getAuthorService();
         if (await service.authorNameExists(body.name)) {
             throw Conflict('Author name already exists.')

@@ -1,5 +1,6 @@
 import {RequestHandler} from "express";
 import * as express from 'express';
+import {ValidateError} from "tsoa";
 
 export class ApiError extends Error {
     public code: number;
@@ -19,8 +20,13 @@ export function apiErrorHandler(err: Error,
                                 req: express.Request,
                                 res: express.Response,
                                 next: express.NextFunction) {
+    console.log('ERROR', err);
     if (err instanceof ApiError) {
         res.status(err.code);
         res.json({message: err.message});
+    }
+    if (err instanceof ValidateError) {
+        res.status(err.status);
+        res.json({message: err.message, fields: err.fields});
     }
 }
