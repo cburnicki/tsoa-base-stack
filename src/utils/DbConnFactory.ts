@@ -1,6 +1,6 @@
 import {Db, MongoClient} from "mongodb";
 
-const dbName = process.env.NODE_ENV === 'test' ? 'eventHubTest' : 'eventHub';
+const dbName = process.env.NODE_ENV === 'test' ? 'tsBaseStackTest' : 'tsBaseStack';
 
 export class DbConnFactory {
 

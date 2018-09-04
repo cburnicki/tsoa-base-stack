@@ -4,7 +4,6 @@ import * as swaggerUI from "swagger-ui-express";
 import bodyParser = require("body-parser");
 import {apiErrorHandler} from "./utils/errorHandling";
 
-const swaggerJSON = require('./swagger/swagger.json');
 
 export function createApp(): express.Application {
     const app: express.Application = express();
@@ -15,9 +14,12 @@ export function createApp(): express.Application {
 
     RegisterRoutes(app);
 
-    // SWAGGER
-    app.use('/swagger.json', express.static(__dirname + '/swagger/swagger.json'));
-    app.use('/', swaggerUI.serve, swaggerUI.setup(swaggerJSON));
+    if (process.env.NODE_ENV !== 'test') {
+        // SWAGGER
+        const swaggerJSON = require(__dirname+'/swagger/swagger.json');
+        app.use('/swagger.json', express.static(__dirname+'/swagger/swagger.json'));
+        app.use('/', swaggerUI.serve, swaggerUI.setup(swaggerJSON));
+    }
 
     app.use(apiErrorHandler);
 
