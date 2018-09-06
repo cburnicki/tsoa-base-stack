@@ -9,17 +9,17 @@
 The purpose of this project is to provide a lightweight bootstrap application as a 
 base for a simple but professional production backend.
 
-
+## Architecture
 
 ### tsoa, swagger
 One issue that kept coming up during development is to provide clear endpoint definitions
-for the frontend team. This can be beautifully accomplished by the use of `swaggerUI`,
-which provides a nice and useful OpenAPI standard interface to lookup existing endpoints
+for the frontend team. This can be nicely accomplished by the use of `swaggerUI`,
+which provides a useful OpenAPI standard interface to lookup existing endpoints
 and payloads. Since generating code from a written `swagger.json` definition turned out 
 to be a really bad idea, a decision was made to go with `tsoa` and generate `swagger` definitions
 and express routes from controllers.
 
-## Typescript and MongoDB
+### Typescript And MongoDB
 This project strictly uses typescript since experience showed that a lack of typing 
 **will** lead to more errors, some of them serious security issues.
 
@@ -33,7 +33,7 @@ In previous versions of this stack I played around with ORM solution like `typeO
 the famous `mongoose`. However, ultimately the decision was made not to use any kind
 of ORM for the following reasons:
 
-#### 1. Overhead
+#### 1. Overhead And Dependencies
 Every ORM typically comes with more or less overhead. Be it in runtime (reflections) or,
 more importantly, in development. For example, `mongoose` is (or was at the time) a 
 JavaScript project. To use `mongoose` in a typed way turns ugly and verbose really fast.
@@ -44,7 +44,7 @@ On the other hand, `typeORM` may be a nice solution for relational databases but
 some weird and buggy results even in simple usecases with mongodb.
 
 Ultimately, imho, there isn't really an advantage of using something like `mongoose` in
-a typescript application. Since mongoDB is a document data store, there isn't actually
+a typescript/mongoDB application. Since mongoDB is a document data store, there isn't actually
 a lot to map: You throw in json and json comes back out. The native mongoDB driver can
 be used with promises and together with typescript's generic typing, it works perfectly 
 fine for most situations.
@@ -61,6 +61,26 @@ This class should contain all writing methods since it 1) takes care of setting 
 `createdAt`, `updatedAt` and `version` of each model and (in one of our usecases) will be used
 to hook in pushs to another system (like a message queue or ElasticSearch).
 
-### Tricks, Workarounds, Pitfalls,...
+### Project Structure
+
+The overall project structure is pretty standard and self-explanatory. It consists of a colletion 
+of models and three basic layers:
+
+1. The controller layer is used to define endpoints, validate request data and prepare data for the service
+layer.
+
+2. The service layer is used for business logic. This includes updating models from other domains 
+(i.e. updating the author name of each book record if that author is being updated).
+
+3. The repository layer is used to access data from the database or another service.
+
+## Authentication, Authorization
+
+Although tsoa comes with openAPI's authorization and authentication tools, I would strongly advise 
+to use a `keycloak` container and a node-express adapter to handle user management, authorization and 
+authentication. It will be safer, faster to implement and provides out-of-the-box solutions for SSO,
+email verification, password reset... 
+
+## Tricks, Workarounds, Pitfalls,...
 - Sometimes `tsoa` fails to discover newly added Controllers. Import your controller on top of your entryFile (i.e. `server.ts`) 
 and run the swagger command again. 
